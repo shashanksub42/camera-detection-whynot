@@ -115,19 +115,19 @@ function isFingerCurled(lm, tipIdx, mcpIdx) {
 }
 
 // ─── Shadow Clone Jutsu detection ────────────────────────────────────────────
-// Sign: BOTH hands with index + middle extended, ring + pinky curled.
-// Hands are rotated 90° (edge facing camera), one vertical, one horizontal.
-// Distance-based detection works regardless of wrist rotation.
+// Sign: ANY detected hand with index + middle extended, ring + pinky curled.
 function isShadowCloneSign(allLandmarks, allHandedness) {
-  if (!allLandmarks || allLandmarks.length < 2) return false;
-  for (let i = 0; i < 2; i++) {
+  if (!allLandmarks || allLandmarks.length < 1) return false;
+  for (let i = 0; i < allLandmarks.length; i++) {
     const lm = allLandmarks[i];
-    if (!isFingerExtended(lm,  8, 5))  return false; // index extended
-    if (!isFingerExtended(lm, 12, 9))  return false; // middle extended
-    if (!isFingerCurled(lm,   16, 13)) return false; // ring curled
-    if (!isFingerCurled(lm,   20, 17)) return false; // pinky curled
+    if (
+      isFingerExtended(lm,  8, 5) &&   // index extended
+      isFingerExtended(lm, 12, 9) &&   // middle extended
+      isFingerCurled(lm,   16, 13) &&  // ring curled
+      isFingerCurled(lm,   20, 17)     // pinky curled
+    ) return true;
   }
-  return true;
+  return false;
 }
 
 // ─── Person extraction ───────────────────────────────────────────────────────
@@ -158,10 +158,6 @@ function drawClone(W, H, slot, alpha) {
   ctx.translate(cx + dw / 2, top);    // anchor at right edge of clone area
   ctx.scale(-1, 1);                   // flip horizontally
   ctx.drawImage(personCanvas, 0, 0, dw, dh);
-  // Blue chakra tint overlay
-  ctx.globalAlpha = alpha * 0.45;
-  ctx.fillStyle   = '#1a4aff';
-  ctx.fillRect(0, 0, dw, dh);
   ctx.restore();
 }
 
