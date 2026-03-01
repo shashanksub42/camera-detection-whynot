@@ -6,8 +6,8 @@ const FINGER_PIPS  = [3, 6, 10, 14, 18];
 // Clone slots: randomly scattered around the screen with perspective scaling.
 // Clones further back (higher in frame) are smaller and slightly more transparent.
 // Regenerated each jutsu activation so positions are different every time.
-const MAX_CLONES     = 15;
-const CLONE_SPAWN_MS = 200;
+const MAX_CLONES     = 35;
+const CLONE_SPAWN_MS = 120;
 let CLONE_SLOTS = [];
 
 function generateCloneSlots() {
