@@ -8,16 +8,13 @@ a web app that uses your laptop webcam to detect your hands in real time. does i
 ## what does it actually do
 
 - detects your hands live using mediapipe (google's hand tracking thing, runs entirely in the browser, no server needed)
-- draws little blue skeleton lines on your fingers because why not
+- draws little blue skeleton lines on your fingers 
 - tells you which fingers are up or down and tries to name the gesture
-- has a **shadow clone jutsu** easter egg because naruto
 
 ## the naruto thing (the real reason this exists probably)
 
 what happens when it activates:
 - 15 copies of just you (background removed) start popping in one by one around the screen
-- kanji flashes at the top that says 影分身の術！(kage bunshin no jutsu)
-- blue chakra flash because obviously
 
 background removal is done with mediapipe's selfie segmentation model so the clones are (hopefully) just you and not your entire desk setup.
 
