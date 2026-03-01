@@ -367,19 +367,28 @@ function onResults(results) {
     lastCloneSpawnMs = now;
   }
 
-  // 4. Draw main background (mirrored camera frame)
+  // 4. Draw background (mirrored raw camera frame)
   ctx.save();
   ctx.translate(W, 0);
   ctx.scale(-1, 1);
   ctx.drawImage(results.image, 0, 0, W, H);
   ctx.restore();
 
-  // 5. Draw clones on top (person-only, no background)
+  // 5. Draw clones BEHIND the user (drawn before the main person layer)
   for (let i = 0; i < activeClones; i++) {
     drawClone(W, H, CLONE_SLOTS[i], 1.0);
   }
 
-  // 6. Draw hand landmarks on top of everything
+  // 6. Draw main person on top (segmented cutout — no background, so clones show behind)
+  if (segMask) {
+    ctx.save();
+    ctx.translate(W, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(personCanvas, 0, 0, W, H);
+    ctx.restore();
+  }
+
+  // 7. Draw hand landmarks on top of everything
   ctx.save();
   ctx.translate(W, 0);
   ctx.scale(-1, 1);
