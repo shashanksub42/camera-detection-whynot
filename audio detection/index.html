@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chord Detector</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎵 Chord Detector</h1>
+      <p class="subtitle">Play any song and let the mic detect the chords in real-time</p>
+    </header>
+
+    <div class="controls">
+      <button id="startBtn">Start Listening</button>
+      <button id="stopBtn" disabled>Stop</button>
+      <div class="sensitivity-wrap">
+        <label for="sensitivity">Sensitivity</label>
+        <input type="range" id="sensitivity" min="-100" max="-30" value="-60" step="1" />
+        <span id="sensitivityVal">-60 dB</span>
+      </div>
+    </div>
+
+    <div class="status-bar">
+      <span id="statusText">Idle — press Start Listening</span>
+    </div>
+
+    <!-- Spectrum visualiser -->
+    <div class="visualiser-wrap">
+      <canvas id="spectrum"></canvas>
+    </div>
+
+    <!-- Active notes -->
+    <div class="section">
+      <h2>Active Notes</h2>
+      <div class="notes-grid" id="notesGrid">
+        <div class="note-bubble inactive" data-note="C">C</div>
+        <div class="note-bubble inactive" data-note="C#">C#</div>
+        <div class="note-bubble inactive" data-note="D">D</div>
+        <div class="note-bubble inactive" data-note="D#">D#</div>
+        <div class="note-bubble inactive" data-note="E">E</div>
+        <div class="note-bubble inactive" data-note="F">F</div>
+        <div class="note-bubble inactive" data-note="F#">F#</div>
+        <div class="note-bubble inactive" data-note="G">G</div>
+        <div class="note-bubble inactive" data-note="G#">G#</div>
+        <div class="note-bubble inactive" data-note="A">A</div>
+        <div class="note-bubble inactive" data-note="A#">A#</div>
+        <div class="note-bubble inactive" data-note="B">B</div>
+      </div>
+    </div>
+
+    <!-- Chord display -->
+    <div class="section">
+      <h2>Detected Chord</h2>
+      <div class="chord-display">
+        <div id="chordName">—</div>
+        <div class="chord-meta">
+          <span id="chordNotes"></span>
+          <span id="confidenceLabel"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chord history -->
+    <div class="section">
+      <h2>Recent Chords</h2>
+      <div class="history" id="chordHistory">
+        <span class="history-empty">No chords detected yet</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
