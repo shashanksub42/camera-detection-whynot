@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hand Detection</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- MediaPipe Hands -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <!-- MediaPipe Selfie Segmentation (person mask for clones) -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Hand Detection</h1>
+
+      <div class="video-wrapper">
+        <!-- Hidden raw webcam feed -->
+        <video id="input-video" playsinline></video>
+        <!-- Canvas where we draw the mirrored feed + landmarks -->
+        <canvas id="output-canvas"></canvas>
+      </div>
+
+      <div class="info-bar">
+        <span id="hand-count">Hands detected: 0</span>
+        <span id="fps-counter">FPS: --</span>
+      </div>
+
+      <div id="hand-details"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
