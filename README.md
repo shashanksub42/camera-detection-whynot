@@ -14,8 +14,6 @@ a web app that uses your laptop webcam to detect your hands in real time. does i
 
 ## the naruto thing (the real reason this exists probably)
 
-there's a little reference box at the bottom of the screen showing the shadow clone seal. if you hold up both hands with your **index and middle fingers extended** (other fingers curled), rotate your hands 90° so the edges face the camera, and cross them — **left hand vertical, right hand horizontal** — and hold it for half a second, it activates.
-
 what happens when it activates:
 - 15 copies of just you (background removed) start popping in one by one around the screen
 - kanji flashes at the top that says 影分身の術！(kage bunshin no jutsu)
