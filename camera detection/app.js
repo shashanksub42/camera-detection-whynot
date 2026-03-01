@@ -3,27 +3,33 @@ const FINGER_NAMES = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky'];
 const FINGER_TIPS  = [4, 8, 12, 16, 20];
 const FINGER_PIPS  = [3, 6, 10, 14, 18];
 
-// Clone spawn slots: nx = x-offset from center (fraction of W),
-//                   ny = y top offset (fraction of H), s = scale
-const CLONE_SLOTS = [
-  { nx: -0.28, ny: 0.00, s: 0.64 },
-  { nx:  0.28, ny: 0.00, s: 0.64 },
-  { nx: -0.12, ny: 0.02, s: 0.70 },
-  { nx:  0.12, ny: 0.02, s: 0.70 },
-  { nx: -0.48, ny:-0.02, s: 0.50 },
-  { nx:  0.48, ny:-0.02, s: 0.50 },
-  { nx: -0.62, ny:-0.05, s: 0.42 },
-  { nx:  0.62, ny:-0.05, s: 0.42 },
-  { nx: -0.06, ny: 0.00, s: 0.76 },
-  { nx:  0.06, ny: 0.00, s: 0.76 },
-  { nx: -0.74, ny:-0.08, s: 0.34 },
-  { nx:  0.74, ny:-0.08, s: 0.34 },
-  { nx: -0.38, ny: 0.02, s: 0.46 },
-  { nx:  0.38, ny: 0.02, s: 0.46 },
-  { nx:  0.00, ny:-0.14, s: 0.28 },
-];
+// Clone slots: randomly scattered around the screen with perspective scaling.
+// Clones further back (higher in frame) are smaller and slightly more transparent.
+// Regenerated each jutsu activation so positions are different every time.
 const MAX_CLONES     = 15;
-const CLONE_SPAWN_MS = 200; // ms between each clone popping in
+const CLONE_SPAWN_MS = 200;
+let CLONE_SLOTS = [];
+
+function generateCloneSlots() {
+  CLONE_SLOTS = [];
+  for (let i = 0; i < MAX_CLONES; i++) {
+    // Scale shrinks as clone is higher in frame (further "behind")
+    const s   = 0.45 + Math.random() * 0.50;         // 0.45 – 0.95
+    // ny: top of clone in frame. Higher s = lower in frame (closer).
+    // Scatter across full vertical range but weighted toward upper half for "behind" feel
+    const feetY = 0.35 + Math.random() * 0.60;       // feet between 35%–95% down
+    const ny    = Math.max(0, feetY - s);
+    // nx: horizontal offset from centre. Full width scatter, avoid dead centre for you
+    let nx = (Math.random() - 0.5) * 1.6;            // -0.8 to +0.8
+    // slight nudge away from dead centre so clones don't perfectly overlap you
+    if (Math.abs(nx) < 0.08) nx += nx >= 0 ? 0.12 : -0.12;
+    const a = 0.55 + (1 - s) * 0.40;                 // smaller = slightly more faded
+    CLONE_SLOTS.push({ nx, ny, s, a });
+  }
+  // Draw order: smallest (furthest) first so larger clones render on top
+  CLONE_SLOTS.sort((a, b) => a.s - b.s);
+}
+generateCloneSlots(); // initial seed
 
 // ─── DOM refs ────────────────────────────────────────────────────────────────
 const videoEl       = document.getElementById('input-video');
@@ -344,6 +350,7 @@ function onResults(results) {
       jutsuFlashAlpha  = 1.0;
       activeClones     = 0;
       lastCloneSpawnMs = performance.now();
+      generateCloneSlots(); // fresh random positions every activation
     }
   } else {
     jutsuHoldFrames = Math.max(jutsuHoldFrames - 2, 0);
@@ -369,7 +376,7 @@ function onResults(results) {
 
   // 5. Draw clones on top (person-only, no background)
   for (let i = 0; i < activeClones; i++) {
-    drawClone(W, H, CLONE_SLOTS[i], 0.82);
+    drawClone(W, H, CLONE_SLOTS[i], CLONE_SLOTS[i].a);
   }
 
   // 6. Draw hand landmarks on top of everything
