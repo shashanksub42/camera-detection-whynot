@@ -23,7 +23,7 @@ function generateCloneSlots() {
     let nx = (Math.random() - 0.5) * 1.6;            // -0.8 to +0.8
     // slight nudge away from dead centre so clones don't perfectly overlap you
     if (Math.abs(nx) < 0.08) nx += nx >= 0 ? 0.12 : -0.12;
-    const a = 0.55 + (1 - s) * 0.40;                 // smaller = slightly more faded
+    const a = 1.0;                                 // full opacity, match live video
     CLONE_SLOTS.push({ nx, ny, s, a });
   }
   // Draw order: smallest (furthest) first so larger clones render on top
@@ -376,7 +376,7 @@ function onResults(results) {
 
   // 5. Draw clones on top (person-only, no background)
   for (let i = 0; i < activeClones; i++) {
-    drawClone(W, H, CLONE_SLOTS[i], CLONE_SLOTS[i].a);
+    drawClone(W, H, CLONE_SLOTS[i], 1.0);
   }
 
   // 6. Draw hand landmarks on top of everything
